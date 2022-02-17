@@ -72,22 +72,22 @@ return [
     'schemas' => [
         'open' => [
             'query' => [
-                'users' => App\GraphQL\Queries\UsersQuery::class,
-                'user' => App\GraphQL\Queries\UserQuery::class,
+                'users' => App\GraphQL\Query\User\CollectionQuery::class,
+                'user' => App\GraphQL\Query\User\ResourceQuery::class,
             ],
             'mutation' => [
-                'registerUser' => App\GraphQL\Mutations\RegisterUserMutation::class,
-                'login' => App\GraphQL\Mutations\LoginMutation::class,
+                'register' => App\GraphQL\Mutation\Auth\RegisterMutation::class,
+                'login' => App\GraphQL\Mutation\Auth\LoginMutation::class,
             ],
         ],
         'default' => [
             'query' => [
-                // 
+                //
             ],
             'mutation' => [
-                'upsertUser' => App\GraphQL\Mutations\UpsertUserMutation::class,
-                'deleteUser' => App\GraphQL\Mutations\DeleteUserMutation::class,
-                'logout' => App\GraphQL\Mutations\LogoutMutation::class,
+                'upsertUser' => App\GraphQL\Mutation\User\UpsertMutation::class,
+                'deleteUser' => App\GraphQL\Mutation\User\DeleteMutation::class,
+                'logout' => App\GraphQL\Mutation\Auth\LogoutMutation::class,
             ],
             'middleware' => ['auth:passport'],
         ],
@@ -112,15 +112,18 @@ return [
     ],
 
     'types' => [
-        'user' => App\GraphQL\Types\UserType::class,
-        'pagination' => App\GraphQL\Types\Pagination::class,
+        // User
+        'user' => App\GraphQL\Type\UserType::class,
 
-        // inputs
-        'registerInput' => App\GraphQL\Inputs\RegisterInput::class,
-        'loginInput' => App\GraphQL\Inputs\LoginInput::class,
-        'userInput' => App\GraphQL\Inputs\UserInput::class,
-        'userFilterInput' => App\GraphQL\Inputs\UserFilterInput::class,
-        'userSortInput' => App\GraphQL\Inputs\UserSortInput::class,
+        // Genric
+        'pagination' => App\GraphQL\Type\Pagination::class,
+
+        // Inputs
+        'registerInput' => App\GraphQL\Input\RegisterInput::class,
+        'loginInput' => App\GraphQL\Input\LoginInput::class,
+        'userInput' => App\GraphQL\Input\UserInput::class,
+        'userFilter' => App\GraphQL\Input\UserFilter::class,
+        'userSort' => App\GraphQL\Input\UserSort::class,
     ],
 
     // The types will be loaded on demand. Default is to load all types on each request
@@ -165,7 +168,7 @@ return [
      * Reference \Rebing\GraphQL\Support\PaginationType::class
      */
     // 'pagination_type' => \Rebing\GraphQL\Support\PaginationType::class,
-    'pagination_type' => App\GraphQL\Types\PaginationType::class,
+    'pagination_type' => App\GraphQL\Type\PaginationType::class,
 
     /*
      * You can define your own simple pagination type.

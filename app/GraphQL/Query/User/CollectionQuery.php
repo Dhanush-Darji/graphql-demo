@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Query\User;
 
 use App\Models\User;
 use App\Services\UserService;
@@ -12,7 +12,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
-class UsersQuery extends Query
+class CollectionQuery extends Query
 {
     private $userService;
 
@@ -40,7 +40,7 @@ class UsersQuery extends Query
             ],
             'filters' => [
                 'name' => 'filters',
-                'type' => GraphQL::type('userFilterInput')
+                'type' => GraphQL::type('userFilter')
             ],
             'page' => [
                 'name' => 'page',
@@ -54,7 +54,7 @@ class UsersQuery extends Query
             ],
             'sort' => [
                 'name' => 'sort',
-                'type' => GraphQL::type('userSortInput')
+                'type' => GraphQL::type('userSort')
             ],
         ];
     }

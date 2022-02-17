@@ -1,29 +1,27 @@
 <?php
 
-namespace App\GraphQL\Inputs;
+namespace App\GraphQL\Input;
 
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\InputType;
 
-class LoginInput extends InputType
+class UserSort extends InputType
 {
     protected $attributes = [
-        'name' => 'LoginInput',
+        'name' => 'UserSort',
         'description' => 'An example input',
     ];
 
     public function fields(): array
     {
         return [
-            'email' => [
-                'name' => 'email',
+            'by' => [
                 'type' => Type::string(),
-                'rules' => ['required', 'email', 'exists:users,email']
+                'description' => 'sort by',
             ],
-            'password' => [
-                'name' => 'password',
+            'order' => [
                 'type' => Type::string(),
-                'rules' => ['required', 'min:5']
+                'description' => 'sort order',
             ],
         ];
     }

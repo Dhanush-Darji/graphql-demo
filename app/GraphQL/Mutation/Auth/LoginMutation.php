@@ -1,17 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\GraphQL\Mutations;
+namespace App\GraphQL\Mutation\Auth;
 
 use App\Services\AuthService;
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\Facades\GraphQL;
+use Rebing\GraphQL\Support\Mutation;
 
-class RegisterUserMutation extends Mutation
+use function PHPSTORM_META\type;
+
+class LoginMutation extends Mutation
 {
     private $authService;
 
@@ -21,29 +21,28 @@ class RegisterUserMutation extends Mutation
     }
 
     protected $attributes = [
-        'name' => 'registerUser',
-        'description' => 'Register User'
+        'name' => 'loginMutation',
+        'description' => 'A mutation'
     ];
 
     public function type(): Type
     {
-        return GraphQL::type('user');
+        return GraphQL::Type('user');
     }
 
     public function args(): array
     {
         return [
             'input' => [
-                'type' => GraphQL::Type('registerInput'),
+                'type' => GraphQL::Type('loginInput'),
                 'rules' => ['required'],
             ]
         ];
     }
 
-
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
-        $user = $this->authService->signup($args['input']);
+        $user = $this->authService->login($args['input']);
         return $user;
     }
 }

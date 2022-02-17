@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Inputs;
+namespace App\GraphQL\Input;
 
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\InputType;
 
-class UserFilterInput extends InputType
+class UserFilter extends InputType
 {
     protected $attributes = [
         'name' => 'UserFilterInput',

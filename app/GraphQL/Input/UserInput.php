@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Inputs;
+namespace App\GraphQL\Input;
 
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\InputType;

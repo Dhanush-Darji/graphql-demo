@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Mutations;
+namespace App\GraphQL\Mutation\User;
 
 use App\Services\UserService;
 use Closure;
@@ -11,7 +11,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 
-class UpsertUserMutation extends Mutation
+class UpsertMutation extends Mutation
 {
     private $userService;
 

@@ -2,27 +2,31 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Mutation\User;
 
-use App\Models\User;
+use App\Services\UserService;
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\Query;
-use Rebing\GraphQL\Support\SelectFields;
-use Rebing\GraphQL\Support\Facades\GraphQL;
+use Rebing\GraphQL\Support\Mutation;
 
-
-class UserQuery extends Query
+class DeleteMutation extends Mutation
 {
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     protected $attributes = [
-        'name' => 'user',
-        'description' => 'user'
+        'name' => 'Delete User',
+        'description' => 'A mutation'
     ];
 
     public function type(): Type
     {
-        return GraphQL::type('user');
+        return Type::boolean();
     }
 
     public function args(): array
@@ -31,14 +35,14 @@ class UserQuery extends Query
             'id' => [
                 'name' => 'id',
                 'type' => Type::int(),
-                'rules' => ['required']
+                'rules' => ['required', 'exists:users,id']
             ]
         ];
     }
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
-        $user = User::findOrFail($args['id']);
+        $user = $this->userService->delete($args['id']);
         return $user;
     }
 }
