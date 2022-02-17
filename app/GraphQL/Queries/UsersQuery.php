@@ -10,7 +10,6 @@ use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
-use Rebing\GraphQL\Support\SelectFields;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class UsersQuery extends Query
@@ -29,16 +28,34 @@ class UsersQuery extends Query
 
     public function type(): Type
     {
-        return GraphQL::type('user');
+        return GraphQL::paginate('user');
     }
 
     public function args(): array
     {
         return [
-            'paginate' => [
-                'name' => 'paginate',
-                'type' => Type::string(),
-            ]
+            'search' => [
+                'name' => 'search',
+                'type' => Type::string()
+            ],
+            'filters' => [
+                'name' => 'filters',
+                'type' => GraphQL::type('userFilterInput')
+            ],
+            'page' => [
+                'name' => 'page',
+                'type' => Type::int(),
+                'rules' => ['required']
+            ],
+            'limit' => [
+                'name' => 'limit',
+                'type' => Type::int(),
+                'rules' => ['required']
+            ],
+            'sort' => [
+                'name' => 'sort',
+                'type' => GraphQL::type('userSortInput')
+            ],
         ];
     }
 

@@ -20,23 +20,13 @@ class LogoutMutation extends Mutation
     }
 
     protected $attributes = [
-        'name' => 'logout',
-        'description' => 'Logout'
+        'name' => 'logout'
     ];
 
     public function type(): Type
     {
         return Type::boolean();
     }
-
-    public function args(): array
-    {
-        return [
-            // 
-        ];
-    }
-
-
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {   

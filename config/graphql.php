@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
 
     // The prefix for routes
@@ -84,12 +82,12 @@ return [
         ],
         'default' => [
             'query' => [
-                'users' => App\GraphQL\Queries\UsersQuery::class,
+                // 
             ],
             'mutation' => [
-                'editUser' => App\GraphQL\Mutations\EditUserMutation::class,
-                // 'deleteUser' => App\GraphQL\Mutations\DeleteUserMutation::class,
-                // 'logout' => App\GraphQL\Mutations\LogoutMutation::class,
+                'upsertUser' => App\GraphQL\Mutations\UpsertUserMutation::class,
+                'deleteUser' => App\GraphQL\Mutations\DeleteUserMutation::class,
+                'logout' => App\GraphQL\Mutations\LogoutMutation::class,
             ],
             'middleware' => ['auth:passport'],
         ],
@@ -115,11 +113,14 @@ return [
 
     'types' => [
         'user' => App\GraphQL\Types\UserType::class,
+        'pagination' => App\GraphQL\Types\Pagination::class,
 
         // inputs
         'registerInput' => App\GraphQL\Inputs\RegisterInput::class,
         'loginInput' => App\GraphQL\Inputs\LoginInput::class,
         'userInput' => App\GraphQL\Inputs\UserInput::class,
+        'userFilterInput' => App\GraphQL\Inputs\UserFilterInput::class,
+        'userSortInput' => App\GraphQL\Inputs\UserSortInput::class,
     ],
 
     // The types will be loaded on demand. Default is to load all types on each request
@@ -163,7 +164,8 @@ return [
      * You can define your own pagination type.
      * Reference \Rebing\GraphQL\Support\PaginationType::class
      */
-    'pagination_type' => \Rebing\GraphQL\Support\PaginationType::class,
+    // 'pagination_type' => \Rebing\GraphQL\Support\PaginationType::class,
+    'pagination_type' => App\GraphQL\Types\PaginationType::class,
 
     /*
      * You can define your own simple pagination type.

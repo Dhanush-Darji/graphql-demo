@@ -7,10 +7,11 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
-    use BaseModel, HasApiTokens, Notifiable, HasFactory;
+    use  HasApiTokens, Notifiable, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -44,9 +45,19 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($password);
     }
 
-    public $queryable = [
-        'id'
-    ];
+    public function scopeSearch($query, $value)
+    {
+        return $query->where('name', 'like', '%'. $value .'%')
+            ->orWhere('email', 'likes', '%'. $value .'%');
+    }
 
-    protected $relationship = [];
+    public function scopeName($query,$value)
+    {
+        return $query->where('name', $value);
+    }
+
+    public function scopeEmail($query, $value)
+    {
+        return $query->where('email',$value);
+    }
 }

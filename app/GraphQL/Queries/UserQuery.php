@@ -31,6 +31,7 @@ class UserQuery extends Query
             'id' => [
                 'name' => 'id',
                 'type' => Type::int(),
+                'rules' => ['required']
             ]
         ];
     }

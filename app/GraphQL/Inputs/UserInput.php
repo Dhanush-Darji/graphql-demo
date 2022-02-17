@@ -19,16 +19,35 @@ class UserInput extends InputType
             'name' => [
                 'type' => Type::string(),
                 'description' => 'user name',
-                'rules' => ['required', 'min:3'],
+                'rules' => function($inputArguments, $mutationArguments){
+                    if (array_key_exists('id', $mutationArguments)) {
+                        return ['nullable', 'min:3'];
+                    } else {
+                        return ['required', 'min:3'];
+                    }
+                }
             ],
             'email' => [
                 'type' => Type::string(),
                 'description' => 'user email',
-                'rules' => ['required', 'email'],
+                'rules' => function($inputArguments, $mutationArguments){
+                    if (array_key_exists('id', $mutationArguments)) {
+                        return ['nullable', 'unique:users,email,' . $mutationArguments['id']];
+                    } else {
+                        return ['required', 'unique:users,email'];
+                    }
+                }
             ],
             'password' => [
                 'type' => Type::string(),
                 'description' => 'user password',
+                'rules' => function($inputArguments, $mutationArguments){
+                    if (array_key_exists('id', $mutationArguments)) {
+                        return ['nullable', 'min:5'];
+                    } else {
+                        return ['required', 'min:5'];
+                    }
+                }
             ],
         ];
     }

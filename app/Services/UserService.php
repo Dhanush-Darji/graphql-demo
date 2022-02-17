@@ -3,31 +3,48 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Traits\FilterTrait;
+use App\Traits\PaginationTrait;
+use App\Traits\SortTrait;
+use DB;
 
 class UserService
 {
+    use FilterTrait, SortTrait, PaginationTrait;
+
     private $userObj;
+    
     public function __construct(User $userObj)
     {
         $this->userObj = $userObj;
     }
 
-    public function resource($id, $inputs = null)
+    public function resource($id)
     {
-        $user = $this->userObj->getQB()->findOrFail($id);
+        $user = $this->userObj->findOrFail($id);
         return $user;
     }
 
-    public function collection($args)
+    public function collection($inputs)
     {
-        $paginate = isset($args['paginate']) ? $args['paginate'] : 10;
+        $inputs = $this->paginationAttribute($inputs);
+        $query = $this->userObj;
 
-        if($paginate == -1) {
-            $users = $this->userObj->get();
-        } else {
-            $users = $this->userObj->paginate($paginate);
+        if(isset($inputs['search'])) {
+            $query = $query->search($inputs['search']);
         }
-        return $users;
+
+        $query = $this->filterInput($query, $inputs);
+        $query = $this->sortInput($query, $inputs);
+        $query = $query->paginate($inputs['limit'], ['*'], 'users', $inputs['page']);
+
+        return $query;
+    }
+
+    public function store($inputs)
+    {
+        $user = $this->userObj->create($inputs);
+        return $user;
     }
 
     public function update($inputs)

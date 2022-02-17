@@ -30,7 +30,7 @@ class DeleteUserMutation extends Mutation
 
     public function type(): Type
     {
-        return Type::string();
+        return Type::boolean();
     }
 
     public function args(): array
@@ -38,7 +38,8 @@ class DeleteUserMutation extends Mutation
         return [
             'id' => [
                 'name' => 'id',
-                'type' => Type::nonNull(Type::id()),
+                'type' => Type::int(),
+                'rules' => ['required', 'exists:users,id']
             ]
         ];
     }

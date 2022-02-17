@@ -11,7 +11,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 
-class EditUserMutation extends Mutation
+class UpsertUserMutation extends Mutation
 {
     private $userService;
 
@@ -21,7 +21,7 @@ class EditUserMutation extends Mutation
     }
     
     protected $attributes = [
-        'name' => 'Edit User',
+        'name' => 'Upsert User',
         'description' => 'A mutation'
     ];
 
@@ -36,7 +36,6 @@ class EditUserMutation extends Mutation
             'id' => [
                 'name' => 'id',
                 'type' => Type::int(),
-                'rules' => ['required'],
             ],
             'input' => [
                 'type' => GraphQL::Type('userInput'),
@@ -47,8 +46,14 @@ class EditUserMutation extends Mutation
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {   
-        $args['input']['id'] = $args['id'];
-        $user = $this->userService->update($args['input']);
+        if(isset($args['id'])) {
+            data_fill($args, 'input.id', $args['id']);
+        }
+
+        $user = (isset($args['id']))
+                ? $this->userService->update($args['input'])
+                : $this->userService->store($args['input']);
+                
         return $user;
     }
 }
